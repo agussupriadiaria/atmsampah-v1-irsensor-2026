@@ -16,8 +16,8 @@ GPIO.setup(BUTTON_PIN2, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.setup(OUTPUT_PIN, GPIO.OUT)
 
 # ================= KONFIGURASI TAMPILAN =================
-BG_MAIN_PATH  = "/home/blacksheep/Desktop/AUTOSTART/bg_main.jpg"
-BG_FRAME_PATH = "/home/blacksheep/Desktop/AUTOSTART/bg_frame.jpg"
+BG_MAIN_PATH  = "/home/aria/Desktop/atmsampah-v1-irsensor-2026/bg_main.jpg"
+BG_FRAME_PATH = "/home/aria/Desktop/atmsampah-v1-irsensor-2026/bg_frame.jpg"
 
 WINDOW_W = 1024
 WINDOW_H = 600
@@ -90,7 +90,7 @@ def mainPage():
     root = Tk()
     root.geometry(f"{WINDOW_W}x{WINDOW_H}")
     root.resizable(False, False)
-    root.title("Button Monitor")
+    root.title("UB | GC")
     root.config(bg="white")
     root.update()
 
@@ -103,7 +103,7 @@ def mainPage():
         bg_main_img = Image.open(BG_MAIN_PATH)
         bg_main_img = bg_main_img.resize((WINDOW_W, WINDOW_H), Image.LANCZOS)
         draw_main = ImageDraw.Draw(bg_main_img)
-        title_text = "Button Monitor"
+        title_text = "UB GC | ILLITERLESS"
         bbox = draw_main.textbbox((0, 0), title_text, font=font_large)
         tw, th = bbox[2] - bbox[0], bbox[3] - bbox[1]
         tx = (WINDOW_W - tw) // 2
@@ -171,15 +171,15 @@ def mainPage():
                          highlightbackground="blue", highlightthickness=5)
     buttonFrame.place(x=left_x, y=card_y)
     buttonFrame.pack_propagate(False)
-    Label(buttonFrame, bg="white", text="STATUS BUTTON", font=("Helvetica", 15, "bold")).place(
+    Label(buttonFrame, bg="white", text="SALDO", font=("Helvetica", 15, "bold")).place(
         relx=0.5, y=18, anchor=CENTER)
 
-    Label(buttonFrame, bg="white", text="Button 1 (GPIO 27)", font=("Helvetica", 11, "bold")).place(x=20, y=70)
-    button1Label = Label(buttonFrame, bg="white", text="TIDAK DITEKAN", font=("Helvetica", 14, "bold"), fg="red")
+    Label(buttonFrame, bg="white", text="Botol Masuk", font=("Helvetica", 11, "bold")).place(x=20, y=70)
+    button1Label = Label(buttonFrame, bg="white", text="TIDAK", font=("Helvetica", 14, "bold"), fg="red")
     button1Label.place(x=20, y=95)
 
-    Label(buttonFrame, bg="white", text="Button 2 (GPIO 22)", font=("Helvetica", 11, "bold")).place(x=20, y=140)
-    button2Label = Label(buttonFrame, bg="white", text="TIDAK DITEKAN", font=("Helvetica", 14, "bold"), fg="red")
+    Label(buttonFrame, bg="white", text="Tutup Botol Masuk", font=("Helvetica", 11, "bold")).place(x=20, y=140)
+    button2Label = Label(buttonFrame, bg="white", text="TIDAK", font=("Helvetica", 14, "bold"), fg="red")
     button2Label.place(x=20, y=165)
 
     # === CARD KANAN: STATUS OUTPUT ===
@@ -187,9 +187,9 @@ def mainPage():
                          highlightbackground="red", highlightthickness=5)
     outputFrame.place(x=right_x, y=card_y)
     outputFrame.pack_propagate(False)
-    Label(outputFrame, bg="white", text="STATUS OUTPUT", font=("Helvetica", 15, "bold")).place(
+    Label(outputFrame, bg="white", text="Detail Transaksi", font=("Helvetica", 15, "bold")).place(
         relx=0.5, y=18, anchor=CENTER)
-    Label(outputFrame, bg="white", text="Output (GPIO 17)", font=("Helvetica", 12, "bold")).place(
+    Label(outputFrame, bg="white", text="Trx Id Status", font=("Helvetica", 12, "bold")).place(
         relx=0.5, y=90, anchor=CENTER)
     outputLabel = Label(outputFrame, bg="white", text="TIDAK AKTIF", font=("Helvetica", 22, "bold"), fg="red")
     outputLabel.place(relx=0.5, y=135, anchor=CENTER)
@@ -233,8 +233,8 @@ def pollButtons():
     state2 = GPIO.input(BUTTON_PIN2)
     output = state1 and state2
 
-    button1Label.config(text="DITEKAN" if state1 else "TIDAK DITEKAN", fg="green" if state1 else "red")
-    button2Label.config(text="DITEKAN" if state2 else "TIDAK DITEKAN", fg="green" if state2 else "red")
+    button1Label.config(text="YA" if state1 else "TIDAK", fg="green" if state1 else "red")
+    button2Label.config(text="YA" if state2 else "TIDAK", fg="green" if state2 else "red")
 
     if output != last_state:
         last_state = output
