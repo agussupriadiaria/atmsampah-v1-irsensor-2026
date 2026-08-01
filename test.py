@@ -166,12 +166,12 @@ def mainPage():
     left_x = (frame_w - total_w) // 2
     right_x = left_x + card_w + gap
 
-    # === CARD KIRI: STATUS BUTTON 1 & 2 ===
+    # === CARD KIRI: TOTAL SALDO ===
     buttonFrame = Frame(mainFrame, bg="white", width=card_w, height=card_h,
                          highlightbackground="blue", highlightthickness=5)
     buttonFrame.place(x=left_x, y=card_y)
     buttonFrame.pack_propagate(False)
-    Label(buttonFrame, bg="white", text="SALDO", font=("Helvetica", 15, "bold")).place(
+    Label(buttonFrame, bg="white", text="TOTAL SALDO", font=("Helvetica", 15, "bold")).place(
         relx=0.5, y=18, anchor=CENTER)
 
     Label(buttonFrame, bg="white", text="Botol Masuk", font=("Helvetica", 11, "bold")).place(x=20, y=70)
@@ -182,12 +182,12 @@ def mainPage():
     button2Label = Label(buttonFrame, bg="white", text="TIDAK", font=("Helvetica", 14, "bold"), fg="red")
     button2Label.place(x=20, y=165)
 
-    # === CARD KANAN: STATUS OUTPUT ===
+    # === CARD KANAN: DETAIL TRANSAKSI ===
     outputFrame = Frame(mainFrame, bg="white", width=card_w, height=card_h,
                          highlightbackground="red", highlightthickness=5)
     outputFrame.place(x=right_x, y=card_y)
     outputFrame.pack_propagate(False)
-    Label(outputFrame, bg="white", text="Detail Transaksi", font=("Helvetica", 15, "bold")).place(
+    Label(outputFrame, bg="white", text="DETAIL TRANSAKSI", font=("Helvetica", 15, "bold")).place(
         relx=0.5, y=18, anchor=CENTER)
     Label(outputFrame, bg="white", text="Trx Id Status", font=("Helvetica", 12, "bold")).place(
         relx=0.5, y=90, anchor=CENTER)
