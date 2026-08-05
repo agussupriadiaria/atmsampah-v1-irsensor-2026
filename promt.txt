@@ -1,0 +1,8 @@
+ok, sesuaikan codenya, saya ingin perubahan logic berikut:
+
+- sesuaikan penamaan variable irHigh agar tidak menyesatkan
+- saya ingin servo continues di SERVO_PIN1 berputar CCW saat ir sensor IR_SENSOR_PIN posisinya high, jika sudah low servo SERVO_PIN1 berhenti (sebagai penanda posisi awal dan reset posisi).
+- jika BUTTON_PIN1 hight maka SERVO_PIN1 bergerak CW 2 detik, membuat IR_SENSOR_PIN menjadi high lagi. berikan jeda 2 detik. Terus kembali keposisi awal (buat IR_SENSOR_PIN jadi low lagi)
+- SERVO_PIN2 posisi awalnya 0 drajat.
+- jika BUTTON_PIN2 high, SERVO_PIN2 bergerak 45 drajat, jeda 2 detik, dan kembali lagi 0 drajat
+- Saya ingin menambahkan BUTTON_PIN3, jika high akan membuat SERVO_PIN1 bergerak CW 2 detik, membuat IR_SENSOR_PIN menjadi high lagi. berikan jeda 8 detik. Terus kembali ke posisi awal (buat IR_SENSOR_PIN jadi low lagi).
