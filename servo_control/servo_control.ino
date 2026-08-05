@@ -1,6 +1,6 @@
 #include <Servo.h>
 
-const int BUTTON_PIN1   = 9; // pin raspi 5
+const int BUTTON_PIN1   = 9; // pin raspi 5 = trigger servo continues
 const int BUTTON_PIN2   = 10; // pin raspi 6
 const int BUTTON_PIN3   = 11;  // pin raspi 16
 const int IR_SENSOR_PIN = 12; // ir reset posisition
