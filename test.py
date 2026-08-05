@@ -8,7 +8,7 @@ import signal
 # ================= KONFIGURASI GPIO =================
 BUTTON_PIN1 = 27
 BUTTON_PIN2 = 22
-OUTPUT_PIN  = 17
+OUTPUT_PIN  = 5
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(BUTTON_PIN1, GPIO.IN)
