@@ -9,13 +9,15 @@ import signal
 BUTTON_PIN1 = 27
 BUTTON_PIN2 = 22
 OUTPUT_PIN  = 6
-START_PIN   = 5
+START_PIN = 5
+START_LAMA_PIN = 16
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(BUTTON_PIN1, GPIO.IN)
 GPIO.setup(BUTTON_PIN2, GPIO.IN)
 GPIO.setup(OUTPUT_PIN, GPIO.OUT, initial=GPIO.LOW)
 GPIO.setup(START_PIN, GPIO.OUT, initial=GPIO.LOW)
+GPIO.setup(START_LAMA_PIN, GPIO.OUT, initial=GPIO.LOW)
 
 # ================= KONFIGURASI TAMPILAN =================
 BG_MAIN_PATH  = "/home/aria/Desktop/atmsampah-v1-irsensor-2026/bg_main.jpg"
@@ -25,14 +27,13 @@ WINDOW_W = 1024
 WINDOW_H = 600
 
 last_state = None
-start_busy = False
+start_busy=False
 
 
 def signal_handler(signum, frame):
     try:
         closeWindow()
-    except:
-        pass
+    except: pass
     sys.exit()
 
 
@@ -212,10 +213,12 @@ def mainPage():
     else:
         btn_bg = "white"
 
-    spacing = 20
-    start_x = btn_x - btn_w - spacing
-    makeBtn(mainFrame, "Mulai", "#1a7f37", "#28a745", startPulse, start_x, btn_y, btn_w, btn_h, bg_color=btn_bg)
-    makeBtn(mainFrame, "Keluar", "#a01a1a", "#cc2828", closeWindow, btn_x, btn_y, btn_w, btn_h, bg_color=btn_bg)
+    spacing=20
+    start_x=btn_x-btn_w-spacing
+    start_lama_x=start_x-btn_w-spacing
+    makeBtn(mainFrame,"Mulai Lama","#0b5ed7","#2f80ed",startPulseLama,start_lama_x,btn_y,btn_w,btn_h,bg_color=btn_bg)
+    makeBtn(mainFrame,"Mulai","#1a7f37","#28a745",startPulse,start_x,btn_y,btn_w,btn_h,bg_color=btn_bg)
+    makeBtn(mainFrame,"Keluar","#a01a1a","#cc2828",closeWindow,btn_x,btn_y,btn_w,btn_h,bg_color=btn_bg)
 
     mainFrame.lift()
     stampFrame.lift()
@@ -228,18 +231,22 @@ def mainPage():
 
 
 def startPulse():
-    global start_busy
-    if start_busy:
-        return
-    start_busy = True
-    GPIO.output(START_PIN, GPIO.HIGH)
-    root.after(500, stopPulse)
+    _startPulse(START_PIN)
 
+def startPulseLama():
+    _startPulse(START_LAMA_PIN)
 
-def stopPulse():
+def _startPulse(pin):
     global start_busy
-    GPIO.output(START_PIN, GPIO.LOW)
-    start_busy = False
+    if start_busy: return
+    start_busy=True
+    GPIO.output(pin,GPIO.HIGH)
+    root.after(500, lambda: stopPulse(pin))
+
+def stopPulse(pin):
+    global start_busy
+    GPIO.output(pin,GPIO.LOW)
+    start_busy=False
 
 def updateTime():
     timeStamp.config(text=time.strftime("%H:%M:%S"))
@@ -275,8 +282,9 @@ def pollButtons():
 
 
 def closeWindow():
-    GPIO.output(OUTPUT_PIN, GPIO.LOW)
-    GPIO.output(START_PIN, GPIO.LOW)
+    GPIO.output(OUTPUT_PIN,GPIO.LOW)
+    GPIO.output(START_PIN,GPIO.LOW)
+    GPIO.output(START_LAMA_PIN,GPIO.LOW)
     GPIO.cleanup()
     root.destroy()
 
