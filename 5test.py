@@ -10,8 +10,8 @@ from datetime import datetime
 
 # ================= KONFIGURASI GPIO =================
 BUTTON_PIN1 = 27
-BUTTON_PIN2 = 22
-OUTPUT_PIN  = 6
+BUTTON_PIN2 = 22 #tutup botol
+OUTPUT_PIN  = 6  #botol
 START_PIN = 5
 
 GPIO.setmode(GPIO.BCM)
