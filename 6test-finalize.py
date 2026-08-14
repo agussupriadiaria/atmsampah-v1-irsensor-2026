@@ -182,7 +182,7 @@ def mainPage():
 
     # === UKURAN & POSISI CARD ===
     card_w = int(frame_w * 0.38)
-    card_h = 260  # diperbesar dari 210 -> muat 5 baris data (TID, Jumlah Botol, Status Transaksi, Sensor 1, Sensor 2)
+    card_h = 260  # diperbesar dari 210 -> muat 5 baris data (TID, Jumlah Botol, Status Transaksi, Tutup, Botol)
     gap = int(frame_w * 0.04)
     total_w = card_w * 2 + gap
     card_y = (frame_h - card_h - 100) // 2 + 20
@@ -208,7 +208,7 @@ def mainPage():
     dataFrame.pack_propagate(False)
     Label(dataFrame, bg="white", text="DATA", font=("Helvetica", 15, "bold")).place(
         relx=0.5, y=18, anchor=CENTER)
-    for i, txt in enumerate(["TID", "Jumlah Botol", "Status Transaksi", "Sensor 1", "Sensor 2"]):
+    for i, txt in enumerate(["TID", "Jumlah Botol", "Status Transaksi", "Tutup", "Botol"]):
         Label(dataFrame, bg="white", text=txt, font=("Helvetica", 11, "bold")).place(x=20, y=53 + i * 40)
     trxIdLabel = Label(dataFrame, bg="white", text="-----", font=("Helvetica", 14, "bold"))
     trxIdLabel.place(x=170, y=51)
@@ -369,10 +369,10 @@ def pollButtons():
     if output != last_state:
         last_state = output
         if output:
-            statusLabel.config(text="AKTIF", fg="green")
+            statusLabel.config(text="Valid", fg="green")
             bottleCounter()
         else:
-            statusLabel.config(text="TIDAK AKTIF", fg="red")
+            statusLabel.config(text="TIDAK Valid", fg="red")
 
     GPIO.output(OUTPUT_PIN, GPIO.LOW if output else GPIO.HIGH)  # LOW = trigger ke Arduino (INPUT_PULLUP)
     root.after(50, pollButtons)
