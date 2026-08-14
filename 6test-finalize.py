@@ -9,10 +9,10 @@ import qrcode
 from datetime import datetime
 
 # ================= KONFIGURASI GPIO =================
-BUTTON_PIN1 = 27
+BUTTON_PIN1 = 27 #botol
 BUTTON_PIN2 = 22 #tutup botol
-OUTPUT_PIN  = 6  #botol
-START_PIN = 5
+OUTPUT_PIN  = 6  #output ke arduino
+START_PIN = 5 #button mulai
 
 GPIO.setmode(GPIO.BCM)
 # IR sensor tipe umum (LM393) bersifat active-LOW: idle=HIGH, terdeteksi=LOW.
@@ -108,7 +108,10 @@ def mainPage():
     global saldoLabel, trxIdLabel, jumlahLabel, statusLabel
 
     root = Tk()
-    root.geometry(f"{WINDOW_W}x{WINDOW_H}")
+    # bukan layan full screen
+    #root.geometry(f"{WINDOW_W}x{WINDOW_H}")
+    # layar fullscreen
+    root.attributes('-zoomed', True)
     root.resizable(False, False)
     root.title("ATM Sampah - PilahSampah")
     root.config(bg="white")

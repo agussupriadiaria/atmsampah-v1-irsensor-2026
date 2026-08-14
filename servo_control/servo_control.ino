@@ -1,8 +1,8 @@
 #include <Servo.h>
 
-const int BUTTON_PIN1   = 9; // pin raspi 5 = trigger servo continues
-const int BUTTON_PIN2   = 10; // pin raspi 6
-const int BUTTON_PIN3   = 11;  // pin raspi 16
+const int BUTTON_PIN1   = 9; // pin raspi 5
+const int BUTTON_PIN2   = 10; // pin raspi 6, dari output raspi
+const int BUTTON_PIN3   = 11;  // pin raspi 16 === ini konek kemana??
 const int IR_SENSOR_PIN = 12; // ir reset posisition
 const int SERVO_PIN1    = 4;  // servo continuous rotation
 const int SERVO_PIN2    = 5;  // servo positional 180 derajat
@@ -24,7 +24,7 @@ const unsigned long HOLD_DELAY_BTN3   = 8000; // jeda setelah CW, untuk BUTTON_P
 
 // ==== Konfigurasi servo 2 (positional 180 derajat) ====
 const int SERVO2_HOME_ANGLE   = 0;    // posisi awal
-const int SERVO2_TARGET_ANGLE = 45;   // posisi target
+const int SERVO2_TARGET_ANGLE = 90;   // posisi target
 const unsigned long SERVO2_TRAVEL_TIME = 300;  // asumsi waktu tempuh fisik servo, sesuaikan jika perlu
 const unsigned long SERVO2_HOLD_DELAY  = 2000; // jeda 2 detik di posisi target
 
