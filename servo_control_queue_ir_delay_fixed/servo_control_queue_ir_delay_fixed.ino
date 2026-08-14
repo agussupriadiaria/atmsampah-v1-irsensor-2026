@@ -24,7 +24,7 @@ const unsigned long HOLD_DELAY_BTN3   = 8000; // jeda setelah CW, untuk BUTTON_P
 
 // ==== Konfigurasi servo 2 (positional 180 derajat) ====
 const int SERVO2_HOME_ANGLE   = 0;    // posisi awal
-const int SERVO2_TARGET_ANGLE = 45;   // posisi target
+const int SERVO2_TARGET_ANGLE = 90;   // posisi target
 const unsigned long SERVO2_TRAVEL_TIME = 300;  // asumsi waktu tempuh fisik servo, sesuaikan jika perlu
 const unsigned long SERVO2_HOLD_DELAY  = 2000; // jeda 2 detik di posisi target
 
