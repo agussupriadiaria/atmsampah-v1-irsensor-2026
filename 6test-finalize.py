@@ -106,6 +106,7 @@ def makeBtn(parent, text, color, hover_color, cmd, x, y, w=110, h=50, bg_color="
 def mainPage():
     global root, timeStamp, dateStamp
     global saldoLabel, trxIdLabel, jumlahLabel, statusLabel
+    global sensor1Label, sensor2Label
 
     root = Tk()
     # bukan layan full screen
@@ -181,7 +182,7 @@ def mainPage():
 
     # === UKURAN & POSISI CARD ===
     card_w = int(frame_w * 0.38)
-    card_h = 210
+    card_h = 260  # diperbesar dari 210 -> muat 5 baris data (TID, Jumlah Botol, Status Transaksi, Sensor 1, Sensor 2)
     gap = int(frame_w * 0.04)
     total_w = card_w * 2 + gap
     card_y = (frame_h - card_h - 100) // 2 + 20
@@ -196,9 +197,9 @@ def mainPage():
     Label(saldoFrame, bg="white", text="TOTAL SALDO", font=("Helvetica", 15, "bold")).place(
         relx=0.5, y=18, anchor=CENTER)
     Label(saldoFrame, text="Poin", font=("Helvetica", 28, "bold"), bg="white").place(
-        relx=0.28, rely=0.6, anchor=CENTER)
+        relx=0.28, rely=0.5, anchor=CENTER)
     saldoLabel = Label(saldoFrame, text="0", font=("Helvetica", 28, "bold"), bg="white")
-    saldoLabel.place(relx=0.65, rely=0.6, anchor=CENTER)
+    saldoLabel.place(relx=0.65, rely=0.5, anchor=CENTER)
 
     # === CARD KANAN: DATA (gaya 3atmsampah, tanpa Ukuran/Barcode produk) ===
     dataFrame = Frame(mainFrame, bg="white", width=card_w, height=card_h,
@@ -207,14 +208,18 @@ def mainPage():
     dataFrame.pack_propagate(False)
     Label(dataFrame, bg="white", text="DATA", font=("Helvetica", 15, "bold")).place(
         relx=0.5, y=18, anchor=CENTER)
-    for i, txt in enumerate(["TID", "Jumlah Botol", "Status Sensor"]):
-        Label(dataFrame, bg="white", text=txt, font=("Helvetica", 11, "bold")).place(x=20, y=55 + i * 40)
+    for i, txt in enumerate(["TID", "Jumlah Botol", "Status Transaksi", "Sensor 1", "Sensor 2"]):
+        Label(dataFrame, bg="white", text=txt, font=("Helvetica", 11, "bold")).place(x=20, y=53 + i * 40)
     trxIdLabel = Label(dataFrame, bg="white", text="-----", font=("Helvetica", 14, "bold"))
-    trxIdLabel.place(x=170, y=53)
+    trxIdLabel.place(x=170, y=51)
     jumlahLabel = Label(dataFrame, bg="white", text="0", font=("Helvetica", 14, "bold"))
-    jumlahLabel.place(x=170, y=93)
+    jumlahLabel.place(x=170, y=91)
     statusLabel = Label(dataFrame, bg="white", text="TIDAK AKTIF", font=("Helvetica", 14, "bold"), fg="red")
-    statusLabel.place(x=170, y=133)
+    statusLabel.place(x=170, y=131)
+    sensor1Label = Label(dataFrame, bg="white", text="0", font=("Helvetica", 14, "bold"))
+    sensor1Label.place(x=170, y=171)
+    sensor2Label = Label(dataFrame, bg="white", text="0", font=("Helvetica", 14, "bold"))
+    sensor2Label.place(x=170, y=211)
 
     # === TOMBOL ===
     btn_w = 110
@@ -354,6 +359,12 @@ def pollButtons():
     state2 = GPIO.input(BUTTON_PIN2)
     # Sensor IR active-LOW: LOW berarti objek/botol terdeteksi.
     output = (state1 == GPIO.LOW) and (state2 == GPIO.LOW)
+
+    # Tampilkan nilai mentah tiap sensor: 1 = aktif/terdeteksi (LOW), 0 = idle (HIGH)
+    sensor1Val = 1 if state1 == GPIO.LOW else 0
+    sensor2Val = 1 if state2 == GPIO.LOW else 0
+    sensor1Label.config(text=str(sensor1Val))
+    sensor2Label.config(text=str(sensor2Val))
 
     if output != last_state:
         last_state = output
