@@ -372,7 +372,7 @@ def pollButtons():
             statusLabel.config(text="Valid", fg="green")
             bottleCounter()
         else:
-            statusLabel.config(text="TIDAK Valid", fg="red")
+            statusLabel.config(text="Tidak Valid", fg="red")
 
     GPIO.output(OUTPUT_PIN, GPIO.LOW if output else GPIO.HIGH)  # LOW = trigger ke Arduino (INPUT_PULLUP)
     root.after(50, pollButtons)
