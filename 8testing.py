@@ -108,26 +108,14 @@ def mainPage():
     global saldoLabel, trxIdLabel, jumlahLabel, statusLabel
     global sensor1Label, sensor2Label
 
-    # root = Tk()
-    # # bukan layan full screen
-    # #root.geometry(f"{WINDOW_W}x{WINDOW_H}")
-    # # layar fullscreen
-    # root.attributes('-zoomed', True)
-    # root.resizable(False, False)
-    # root.title("ATM Sampah - PilahSampah")
-    # root.config(bg="white")
-    # root.update()
-
     root = Tk()
-    # === TRUE FULLSCREEN / KIOSK MODE ===
-    # -fullscreen menutupi seluruh layar tanpa title bar/taskbar (beda dgn -zoomed yg cuma maximize)
-    root.attributes('-fullscreen', True)
-    root.overrideredirect(True)  # buang window decoration (border, close button, dsb) sepenuhnya
+    # bukan layan full screen
+    #root.geometry(f"{WINDOW_W}x{WINDOW_H}")
+    # layar fullscreen
+    root.attributes('-zoomed', True)
     root.resizable(False, False)
     root.title("ATM Sampah - PilahSampah")
-    root.config(bg="white", cursor="none")  # sembunyikan kursor mouse untuk tampilan kios
-    # Escape untuk keluar dari fullscreen saat development/debug (hapus baris ini kalau sudah production)
-    root.bind("<Escape>", lambda e: closeWindow())
+    root.config(bg="white")
     root.update()
 
     font_large = ImageFont.load_default()
