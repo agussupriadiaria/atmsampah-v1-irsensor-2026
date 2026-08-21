@@ -30,7 +30,7 @@ const int SERVO2_TARGET_ANGLE = 90;   // posisi target
 // Semakin besar nilainya = semakin lambat
 const unsigned long SERVO2_STEP_DELAY = 10;
 
-const unsigned long SERVO2_HOLD_DELAY = 2000; // tahan 2 detik di posisi target
+const unsigned long SERVO2_HOLD_DELAY = 5000; // tahan 2 detik di posisi target
 
 
 // ================= STATE MACHINE SERVO 1 =================

@@ -19,8 +19,8 @@ const int SERVO_CCW  = 0;     // putar CCW - servo 1
 // kondisi pembacaan irSensorHigh perlu dibalik.
 
 // ==== Durasi servo 1 ====
-const unsigned long MOVE_OUT_DURATION = 1300; // durasi gerak CW menjauh dari home
-const unsigned long HOLD_DELAY_BTN1   = 2000; // jeda setelah CW, BUTTON_PIN1
+const unsigned long MOVE_OUT_DURATION = 1250; // durasi gerak CW menjauh dari home
+const unsigned long HOLD_DELAY_BTN1   = 5000; // jeda setelah CW, BUTTON_PIN1
 const unsigned long HOLD_DELAY_BTN3   = 8000; // jeda setelah CW, BUTTON_PIN3
 
 // ==== Konfigurasi Servo 2 (MG996R positional 180 derajat) ====
