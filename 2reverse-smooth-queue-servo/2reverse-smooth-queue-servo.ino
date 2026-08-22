@@ -1,3 +1,6 @@
+// versi 2
+// Reverse smooth servo
+
 #include <Servo.h>
 
 const int BUTTON_PIN1   = 9;  // pin raspi 5 = trigger servo continuous
