@@ -1,6 +1,7 @@
 // versi: 2 - INTERRUPT ENABLED
 // Reverse smooth servo - servos dapat bergerak simultan
 // Gerakan akumulasi CW
+// tambahan push only
 
 #include <Servo.h>
 
