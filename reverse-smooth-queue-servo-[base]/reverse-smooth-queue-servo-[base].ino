@@ -5,7 +5,7 @@
 
 const int BUTTON_PIN1   = 9;  // pin raspi 5 = trigger servo continuous
 const int BUTTON_PIN2   = 10; // pin raspi 6
-const int BUTTON_PIN3   = 11; // pin raspi 16
+const int BUTTON_PIN3   = 11; // pin raspi 16 = interup emergency naikan flip, buat button baru
 const int IR_SENSOR_PIN = 12; // IR reset position
 const int SERVO_PIN1    = 4;  // servo continuous rotation
 const int SERVO_PIN2    = 5;  // servo positional 180 derajat
