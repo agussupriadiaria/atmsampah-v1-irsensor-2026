@@ -1,4 +1,4 @@
-# update ukuran layar dengan yang terbaru
+# update ukuran layar dengan yang terbaru dengan gui baru
 
 from tkinter import *
 from PIL import Image, ImageDraw, ImageTk, ImageFont
