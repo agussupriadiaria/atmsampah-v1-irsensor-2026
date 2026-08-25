@@ -1,7 +1,6 @@
 // versi: 2 - INTERRUPT ENABLED
 // Reverse smooth servo - servos dapat bergerak simultan
-// Gerakan akumulasi CW
-// tambahan push only
+// refresh 4
 
 #include <Servo.h>
 
@@ -186,18 +185,35 @@ void loop() {
 
     case S1_HOMING:
 
-      // ===== INTERRUPT: Button 1 ditekan saat homing (short move 250ms dengan accumulation) =====
+      // ===== BUTTON 1 DITEKAN DI S1_HOMING =====
       if (button1PressedEvent) {
 
-        isShortMoveInterrupt = true;
-        isInDelayPhase = false;
-        moveCounter = 1;  // Start counter dari 1
+        // Jika IR LOW = kondisi awal, gerak CW 1250ms normal
+        if (!irSensorHigh) {
 
-        myServo.write(SERVO_CW);
+          isShortMoveInterrupt = false;  // ← Normal move
+          holdDuration1 = HOLD_DELAY_BTN1;
 
-        stateStartTime1 = millis();
+          myServo.write(SERVO_CW);
 
-        currentState1 = S1_MOVING_OUT;
+          stateStartTime1 = millis();
+
+          currentState1 = S1_MOVING_OUT;
+
+        } 
+        // Jika IR HIGH = sedang mendekat home, gerak CW 250ms accumulation
+        else {
+
+          isShortMoveInterrupt = true;   // ← Short move dengan accumulation
+          isInDelayPhase = false;
+          moveCounter = 1;
+
+          myServo.write(SERVO_CW);
+
+          stateStartTime1 = millis();
+
+          currentState1 = S1_MOVING_OUT;
+        }
 
         break;
       }
@@ -232,14 +248,22 @@ void loop() {
       }
 
 
-      // ===== KUNCI PENEKANAN BUTTON DIHAPUS =====
-      // Servo 1 bisa langsung gerak tanpa tunggu Servo 2
-      if (button1PressedEvent || button3PressedEvent) {
+      // ===== HANDLE BUTTON PRESS =====
+      // Jika servo sedang idle (diam), Button 1 → trigger homing
+      if (button1PressedEvent) {
 
-        holdDuration1 =
-          button1PressedEvent
-          ? HOLD_DELAY_BTN1
-          : HOLD_DELAY_BTN3;
+        // Button 1 dari S1_IDLE → kembali ke S1_HOMING
+        currentState1 = S1_HOMING;
+
+        break;
+      }
+
+      // Button 3 → normal gerak CW 1250ms
+      if (button3PressedEvent) {
+
+        isShortMoveInterrupt = false;  // Normal move, bukan short
+
+        holdDuration1 = HOLD_DELAY_BTN3;
 
         myServo.write(SERVO_CW);
 
@@ -269,59 +293,80 @@ void loop() {
       }
 
 
-      // ===== PHASE: GERAK CW (jika belum delay) =====
-      if (!isInDelayPhase) {
+      // =========================================================
+      // CASE 1: SHORT MOVE (250ms dengan ACCUMULATION dari homing)
+      // =========================================================
+      if (isShortMoveInterrupt) {
 
-        if (millis() - stateStartTime1 >= MOVE_OUT_SHORT_DURATION) {
+        // ===== PHASE: GERAK CW 250ms =====
+        if (!isInDelayPhase) {
 
-          // Selesai gerak CW 250ms
-          myServo.write(SERVO_STOP);
+          if (millis() - stateStartTime1 >= MOVE_OUT_SHORT_DURATION) {
 
-          isInDelayPhase = true;  // Enter delay phase
+            // Selesai gerak CW 250ms
+            myServo.write(SERVO_STOP);
 
-          stateStartTime1 = millis();  // Reset timer untuk delay
+            isInDelayPhase = true;  // Enter delay phase
 
-          moveCounter--;  // Kurangi counter
-        }
-      }
+            stateStartTime1 = millis();  // Reset timer untuk delay
 
-
-      // ===== PHASE: DELAY 500ms (menunggu button press atau timeout) =====
-      else if (isInDelayPhase) {
-
-        // Button 1 ditekan lagi saat delay → accumulate gerak CW
-        if (button1PressedEvent) {
-
-          moveCounter++;  // Tambah counter
-
-          isInDelayPhase = false;  // Kembali ke move phase
-
-          myServo.write(SERVO_CW);  // Gerak CW lagi
-
-          stateStartTime1 = millis();  // Reset timer untuk gerak berikutnya
-
+            moveCounter--;  // Kurangi counter
+          }
         }
 
-        // Delay 500ms selesai tanpa press button
-        else if (millis() - stateStartTime1 >= MOVE_OUT_DELAY) {
+        // ===== PHASE: DELAY 500ms (menunggu button press atau timeout) =====
+        else if (isInDelayPhase) {
 
-          // Cek apakah masih ada counter (perlu gerak lagi)
-          if (moveCounter > 0) {
+          // Button 1 ditekan lagi saat delay → accumulate gerak CW
+          if (button1PressedEvent) {
+
+            moveCounter++;  // Tambah counter
 
             isInDelayPhase = false;  // Kembali ke move phase
 
             myServo.write(SERVO_CW);  // Gerak CW lagi
 
-            stateStartTime1 = millis();
+            stateStartTime1 = millis();  // Reset timer untuk gerak berikutnya
 
-          } else {
-
-            // Counter = 0, selesai accumulation, balik S1_HOMING
-            isShortMoveInterrupt = false;
-            isInDelayPhase = false;
-
-            currentState1 = S1_HOMING;
           }
+
+          // Delay 500ms selesai tanpa press button
+          else if (millis() - stateStartTime1 >= MOVE_OUT_DELAY) {
+
+            // Cek apakah masih ada counter (perlu gerak lagi)
+            if (moveCounter > 0) {
+
+              isInDelayPhase = false;  // Kembali ke move phase
+
+              myServo.write(SERVO_CW);  // Gerak CW lagi
+
+              stateStartTime1 = millis();
+
+            } else {
+
+              // Counter = 0, selesai accumulation, balik S1_HOMING
+              isShortMoveInterrupt = false;
+              isInDelayPhase = false;
+
+              currentState1 = S1_HOMING;
+            }
+          }
+        }
+      }
+
+
+      // =========================================================
+      // CASE 2: NORMAL MOVE (1250ms TANPA accumulation dari idle)
+      // =========================================================
+      else {
+
+        if (millis() - stateStartTime1 >= MOVE_OUT_DURATION) {
+
+          // Selesai gerak CW 1250ms
+          myServo.write(SERVO_STOP);
+
+          // Langsung ke S1_IDLE, diam di posisi (tunggu button press lagi)
+          currentState1 = S1_IDLE;
         }
       }
 
@@ -329,15 +374,9 @@ void loop() {
     }
 
 
-    case S1_HOLDING:
+    // case S1_HOLDING tidak lagi digunakan
+    // Setelah gerak normal 1250ms, langsung S1_IDLE
 
-      if (millis() - stateStartTime1 >= holdDuration1) {
-
-        // Kembali ke posisi awal menggunakan sensor IR
-        currentState1 = S1_HOMING;
-      }
-
-      break;
   }
 
 
