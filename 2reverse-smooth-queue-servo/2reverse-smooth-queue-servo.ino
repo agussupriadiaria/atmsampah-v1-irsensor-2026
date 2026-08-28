@@ -1,5 +1,6 @@
 // versi: 2 - Parallel Execution + Button 3 Interrupt
 // Reverse smooth servo - REFACTORED
+// Update 28/08/2026: Final movement duration
 
 #include <Servo.h>
 
@@ -15,7 +16,7 @@ const int SERVO_CW   = 180;   // putar CW - servo 1
 const int SERVO_CCW  = 0;     // putar CCW - servo 1
 
 // ==== Durasi servo 1 ====
-const unsigned long MOVE_OUT_DURATION_BTN1   = 1250; // button 1: CW duration
+const unsigned long MOVE_OUT_DURATION_BTN1   = 1350; // button 1: CW duration
 const unsigned long MOVE_OUT_DURATION_BTN3   = 250;  // button 3: CW duration (interrupt)
 const unsigned long BUTTON3_DELAY            = 2000; // button 3: delay sebelum homing
 
